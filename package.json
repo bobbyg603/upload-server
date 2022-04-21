@@ -1,10 +1,11 @@
 {
-  "name": "node-js-express-upload-download-files",
+  "name": "upload-server",
   "version": "1.0.0",
   "description": "Node.js Express Rest APIs to Upload/Download Files",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [
     "node js",
@@ -17,10 +18,18 @@
     "multer"
   ],
   "author": "bezkoder",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "multer": "^1.4.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobbyg603/upload-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bobbyg603/upload-server/issues"
+  },
+  "homepage": "https://github.com/bobbyg603/upload-server#readme"
 }
