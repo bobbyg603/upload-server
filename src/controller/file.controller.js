@@ -40,7 +40,7 @@ const getListFiles = async (req, res) => {
         name: file,
         url: baseUrl + file,
         size: stat.size,
-        created: stat.birthtime
+        uploaded: stat.birthtime
       };
     });
     const fileInfos = await Promise.all(fileInfoPromises);
