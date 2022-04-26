@@ -1,5 +1,5 @@
 const uploadFile = require("../middleware/upload");
-const fs = require("fs");
+const fs = require("fs/promises");
 const baseUrl = "http://localhost:8080/files/";
 
 const upload = async (req, res) => {
@@ -11,44 +11,46 @@ const upload = async (req, res) => {
     }
 
     res.status(200).send({
-      message: "Uploaded the file successfully: " + req.file.originalname,
+      message: "Uploaded the file successfully: " + req.file?.originalname,
     });
   } catch (err) {
     console.log(err);
 
     if (err.code == "LIMIT_FILE_SIZE") {
-      return res.status(500).send({
-        message: "File size cannot be larger than 2MB!",
+      return res.status(400).send({
+        message: "File size cannot be larger than 100MB!",
       });
     }
 
     res.status(500).send({
-      message: `Could not upload the file: ${req.file.originalname}. ${err}`,
+      message: `Could not upload the file: ${req.file?.originalname}. ${err}`,
     });
   }
 };
 
-const getListFiles = (req, res) => {
+const getListFiles = async (req, res) => {
   const directoryPath = __basedir + "/resources/static/assets/uploads/";
 
-  fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-      res.status(500).send({
-        message: "Unable to scan files!",
-      });
-    }
-
-    let fileInfos = [];
-
-    files.forEach((file) => {
-      fileInfos.push({
+  try {
+    const files = await fs.readdir(directoryPath);
+    const fileInfoPromises = files.map(async (file) => {
+      const filePath = `${directoryPath}${file}`;
+      const stat = await fs.stat(filePath);
+      return {
         name: file,
         url: baseUrl + file,
-      });
+        size: stat.size,
+        created: stat.birthtime
+      };
     });
+    const fileInfos = await Promise.all(fileInfoPromises);
 
     res.status(200).send(fileInfos);
-  });
+  } catch(err) {
+    res.status(500).send({
+      message: "Unable to scan files!",
+    });
+  }
 };
 
 const download = (req, res) => {

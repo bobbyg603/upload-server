@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "watch": "nodemon server.js 8080"
   },
   "keywords": [
     "node js",
@@ -31,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/bobbyg603/upload-server/issues"
   },
-  "homepage": "https://github.com/bobbyg603/upload-server#readme"
+  "homepage": "https://github.com/bobbyg603/upload-server#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
